@@ -4,7 +4,6 @@ import { useState, useEffect } from "react"
 function App() {
   const [tareas, setTareas] = useState([])
   const [nuevaTarea, setNuevatarea] = useState('')
-  const [textSize, setTextSize] = useState(0)
   const [theme, setTheme] = useState(() => {
     if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
       return "dark";
@@ -26,10 +25,6 @@ function App() {
   const borrarTarea = (id) => {
     setTareas(tareas.filter(ele => ele.id !== id))
   }
-  useEffect(() => {
-    console.log(tareas.length)
-  }, [tareas])
-
   const handleCambiarTheme = () => {
     setTheme((prevTheme) => prevTheme === "light" ? "dark" : "light")
   }
