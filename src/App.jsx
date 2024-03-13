@@ -2,7 +2,7 @@ import './App.css'
 import { useState, useEffect } from "react"
 
 function App() {
-  const [tareas, setTareas] = useState([])
+  const [tareas, setTareas] = useState(!localStorage.getItem('myTasks') ? [] : JSON.parse(localStorage.getItem('myTasks')))
   const [nuevaTarea, setNuevatarea] = useState('')
   const [theme, setTheme] = useState(() => {
     if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
@@ -15,19 +15,23 @@ function App() {
       agregarNuevaTarea();
     }
   };
-
   const agregarNuevaTarea = () => {
     if (!nuevaTarea) return;
     if (nuevaTarea.length > 80) return;
     setTareas([...tareas, { id: tareas.length + 1, nombre: nuevaTarea }])
     setNuevatarea('')
   }
-  const borrarTarea = (id) => {
-    setTareas(tareas.filter(ele => ele.id !== id))
+  const borrarTarea = (tid) => {
+    setTareas(tareas.filter(el => el.id !== tid))
   }
   const handleCambiarTheme = () => {
     setTheme((prevTheme) => prevTheme === "light" ? "dark" : "light")
   }
+  // Setear en localStorage las tareas cada vez que el estado "Tareas" sea modificado.
+  useEffect(() => {
+    localStorage.setItem('myTasks', JSON.stringify(tareas))
+  }, [tareas])
+
   useEffect(() => {
     if (theme === "dark") {
       document.querySelector("html").classList.add("dark");
